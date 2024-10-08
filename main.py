@@ -49,16 +49,50 @@ try:
 """))
         projectTypeArray = ["Python Projects", "Front-End Projects", "C Projects", "C++ Projects", "JavaScript Projects"]
 
+
         projectType = projectTypeArray[projectType-1]
 
         pcOrLaptop = input("PC or Laptop: ")
 
         if pcOrLaptop.lower() == "laptop":
-            path = f"G:\\My Drive\\Coding\\{projectType}"
-            os.chdir(path)
-            exitCode = os.popen(f"mkdir \"{projectName}\"").read().strip()
+           path = f"G:\\My Drive\\Coding\\{projectType}"
+        else:
+           path = f"G:\\My Drive\\Coding\\Coding\\{projectType}"
+
+
+        os.chdir(path)
+
+        exitCode = os.popen(f"mkdir \"{projectName}\"").read().strip()
+        print(exitCode)
+
+        path = path + "\\" + projectName
+
+        os.chdir(path)
+
+        if projectType == "Front-End Projects":
+            exitCode = os.popen("mkdir css").read().strip()
             print(exitCode)
-            
+            exitCode = os.popen("mkdir js").read().strip()
+            print(exitCode)
+            try:
+                with open("index.html", "x") as f:
+                    f.write("*/This file was automatically created*/")
+            except FileExistsError:
+                pass
+        elif projectType == "Python Projects":
+            try:
+                with open("main.py", "x") as f:
+                    f.write("#This file was automatically created")
+            except FileExistsError:
+                pass
+
+        exitCode = os.popen("git init").read().strip()
+        print(exitCode)        
+
+        exitCode = os.popen("code .").read().strip()
+        print(exitCode)
+
+           
             
                
 
