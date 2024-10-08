@@ -1,84 +1,54 @@
 import os
-
-def execute_command(command, path=None):
-  """Executes a shell command in the specified path.
-
-  Args:
-    command: The command to execute.
-    path: The optional path to execute the command in. If not specified, the current
-      working directory is used.
-
-  Returns:
-    The output of the command as a string.
-  """
-
-  if path:
-    os.chdir(path)
+import time as t
 
 
-  result = os.popen(command).read().strip()
-  return result
-
-# Example usage:
-command = "mkdir TestTestTest"
-custom_path = "G:\\My Drive\\Coding\\" + "Python Projects"
-
-# output = execute_command(command, custom_path)
-# print(output)
-
-# name = input("Enter project name: ")
-# projectType = input("""Enter project type:
-#   [1] Python 
-#   [2] Front-end Web Dev
-#   [3] C Project
-#   [4] C++ Project
-#   [5] JS Project
-# """)
-
-# pcOrLaptop = input("PC or Laptop: ")
-
-try:
-    while True:
+while True:
+    try:
+        # To created named folder as well as the location to put it in:
         projectName = input("Enter project name: ")
         projectType = int(input("""Enter project type:
-  [1] Python Project
-  [2] Front-End Project
-  [3] C Project
-  [4] C++ Project
-  [5] JavaScript Project
-"""))
+    [1] Python Project
+    [2] Front-End Project
+    [3] C Project
+    [4] C++ Project
+    [5] JavaScript Project
+"""))   
+        # Usage of array allows avoidance of multiple if statements
         projectTypeArray = ["Python Projects", "Front-End Projects", "C Projects", "C++ Projects", "JavaScript Projects"]
 
-
+        # Assigning number option to actual string value to append to file paths
         projectType = projectTypeArray[projectType-1]
 
         pcOrLaptop = input("PC or Laptop: ")
 
         if pcOrLaptop.lower() == "laptop":
-           path = f"G:\\My Drive\\Coding\\{projectType}"
+            path = f"G:\\My Drive\\Coding\\{projectType}"
         else:
-           path = f"G:\\My Drive\\Coding\\Coding\\{projectType}"
+            path = f"G:\\My Drive\\Coding\\Coding\\{projectType}"
 
-
+        # Changes directory to path defined
         os.chdir(path)
 
-        exitCode = os.popen(f"mkdir \"{projectName}\"").read().strip()
-        print(exitCode)
-
+        # Creates project folder
+        os.popen(f"mkdir \"{projectName}\"").read().strip()
+        
+        # Changes path to include project folder
         path = path + "\\" + projectName
 
+        # Changes current working directory to path defined (again)
         os.chdir(path)
 
+
+        # If project is that of front-end, creates css, js folders and an index.html file
         if projectType == "Front-End Projects":
-            exitCode = os.popen("mkdir css").read().strip()
-            print(exitCode)
-            exitCode = os.popen("mkdir js").read().strip()
-            print(exitCode)
+            os.popen("mkdir css").read().strip()
+            os.popen("mkdir js").read().strip()
             try:
                 with open("index.html", "x") as f:
                     f.write("*/This file was automatically created*/")
             except FileExistsError:
                 pass
+        # Creates main.py if project is python
         elif projectType == "Python Projects":
             try:
                 with open("main.py", "x") as f:
@@ -86,21 +56,24 @@ try:
             except FileExistsError:
                 pass
 
-        exitCode = os.popen("git init").read().strip()
-        print(exitCode)        
 
-        exitCode = os.popen("code .").read().strip()
-        print(exitCode)
+        # Initialises git 
+        os.popen("git init").read().strip()
 
-           
-            
-               
-
-
-except KeyboardInterrupt:
-    print("Program Terminated by User")
+        # Opens folder in vscode for further action       
+        os.popen("code .").read().strip()
+                
+    # Allows program to end
+    except KeyboardInterrupt:
+        print("\nProgram Terminated by User ☠️")
+        quit()
 
 
+    # Incorrect value entered by mistake
+    except ValueError:
+        print("\nValue entered was invalid, please try another ")
+        t.sleep(0.25)
+        pass
 
 
 
